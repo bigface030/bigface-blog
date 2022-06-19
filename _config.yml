@@ -99,6 +99,8 @@ ignore:
 ## Themes: https://hexo.io/themes/
 theme: hexo-theme-aomori
 
+aomori_favicon: 🐢
+
 aomori_menu:
   Home: /
   Archives: /archives
