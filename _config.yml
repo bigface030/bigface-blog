@@ -102,6 +102,7 @@ theme: hexo-theme-aomori
 aomori_menu:
   Home: /
   Archives: /archives
+  Tags: /tags
   About: /about
 
 aomori_social:

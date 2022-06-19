@@ -1,11 +1,11 @@
-<% site.data.friends.forEach((items) => { %>
+<% site.data.tags.forEach((items) => { %>
     <div class="friends-category">
         <div class="friends-category-title">
             <%= items.category %>
         </div>
         <div class="friends-category-inner clearfix">
             <% items.data.forEach((item) => { %>
-                <a href="<%= item.url %>" rel="nofollow" target="_blank"> <%= item.name %> </a>
+                <a href="<%= item.url %>"> <%= item.name %> </a>
             <% }) %>
         </div>
     </div>
