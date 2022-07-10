@@ -17,7 +17,7 @@
 
         <footer class="article-footer">
           <div class="article-more-info">
-            <a class="article-tweet-common" href="<%- url_for(post.path) %>">评论</a>
+            <a class="article-tweet-common" href="<%- url_for(post.path) %>">... 查看更多</a>
             <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
             <% if (post.categories && post.categories.length){ %>
                 <div class="article-category">
