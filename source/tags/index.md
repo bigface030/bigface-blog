@@ -3,4 +3,9 @@ title: Tags
 date: 2022-06-19 15:07:57
 layout: friends
 ---
-123
+
+## 技術交流
+- 2022/7/17：[非同步的 Parallel & Seqential](http://blog.bigface.tw/async_parallel_sequential/)
+
+## 心得分享
+- 2022/6/18：[前端工程師面試心得](http://blog.bigface.tw/front-end-interview/)

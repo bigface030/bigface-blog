@@ -107,13 +107,13 @@ aomori_menu:
   Tags: /tags
   About: /about
 
-aomori_social:
-  -
-    icon: logo-github
-    url: https://github.com/TPdidilong
-  -
-    icon: logo-linkedin
-    url: https://google.com
+# aomori_social:
+#   -
+#     icon: logo-github
+#     url: https://github.com/TPdidilong/bigface-blog
+#   -
+#     icon: logo-facebook
+#     url: https://facebook.com
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
