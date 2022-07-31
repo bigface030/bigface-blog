@@ -121,3 +121,7 @@ deploy:
   type: git
   repo: https://github.com/TPdidilong/bigface-blog
   branch: master
+
+# Sitemap
+sitemap:
+  path: sitemap.xml
