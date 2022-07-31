@@ -6,27 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
     
-    <title>非同步的 Parallel &amp; Seqential | 大臉與哈燒出版社</title>
+    <title>Wait！Await 和你想的不一樣！淺談非同步的 Parallel &amp; Seqential | 大臉與哈燒出版社</title>
 
-    <meta name="description" content="&lt;p&gt;在處理多個非同步操作的時候，大致上會分為併發 (Parallel) 和序列 (Sequential) 執行兩種情況。&lt;br&gt;本文將會從常見的應用邏輯切入，先釐清 Javascript 裡面 Async Function 的概念，進而探究序列非同步的核心，最後輔以 Event Loop 作為圖像化的解釋。&lt;/p&gt;">
+    <meta name="description" content="&lt;p&gt;在處理多個非同步操作的時候，大致上會分為並行 (Parallel) 和序列 (Sequential) 執行兩種情況。&lt;br&gt;本文將會從常見的應用邏輯切入，先釐清 Javascript 裡面 Async Function 的概念，進而探究序列非同步的核心，最後輔以 Event Loop 作為圖像化的解釋。&lt;/p&gt;">
     <meta name="keywords" content="">
 
     
 
     <meta property="og:locale" content="en" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content= "非同步的 Parallel &amp; Seqential | 大臉與哈燒出版社"  />
-    <meta property="og:description" content= "&lt;p&gt;在處理多個非同步操作的時候，大致上會分為併發 (Parallel) 和序列 (Sequential) 執行兩種情況。&lt;br&gt;本文將會從常見的應用邏輯切入，先釐清 Javascript 裡面 Async Function 的概念，進而探究序列非同步的核心，最後輔以 Event Loop 作為圖像化的解釋。&lt;/p&gt;" />
+    <meta property="og:title" content= "Wait！Await 和你想的不一樣！淺談非同步的 Parallel &amp; Seqential | 大臉與哈燒出版社"  />
+    <meta property="og:description" content= "&lt;p&gt;在處理多個非同步操作的時候，大致上會分為並行 (Parallel) 和序列 (Sequential) 執行兩種情況。&lt;br&gt;本文將會從常見的應用邏輯切入，先釐清 Javascript 裡面 Async Function 的概念，進而探究序列非同步的核心，最後輔以 Event Loop 作為圖像化的解釋。&lt;/p&gt;" />
     <meta property="og:url" content="http://example.com/async_parallel_sequential/index.html" />
     <meta property="og:site_name" content="" />
     <meta property="article:author" content="Dalian Wang" />
     <meta property="article:publisher" content="" />
-    <meta property="og:description" content="&lt;p&gt;在處理多個非同步操作的時候，大致上會分為併發 (Parallel) 和序列 (Sequential) 執行兩種情況。&lt;br&gt;本文將會從常見的應用邏輯切入，先釐清 Javascript 裡面 Async Function 的概念，進而探究序列非同步的核心，最後輔以 Event Loop 作為圖像化的解釋。&lt;/p&gt;" />
-    <meta name="twitter:title" content="非同步的 Parallel &amp; Seqential | 大臉與哈燒出版社"/>
-    <meta name="twitter:description" content="&lt;p&gt;在處理多個非同步操作的時候，大致上會分為併發 (Parallel) 和序列 (Sequential) 執行兩種情況。&lt;br&gt;本文將會從常見的應用邏輯切入，先釐清 Javascript 裡面 Async Function 的概念，進而探究序列非同步的核心，最後輔以 Event Loop 作為圖像化的解釋。&lt;/p&gt;"/>
+    <meta property="og:description" content="&lt;p&gt;在處理多個非同步操作的時候，大致上會分為並行 (Parallel) 和序列 (Sequential) 執行兩種情況。&lt;br&gt;本文將會從常見的應用邏輯切入，先釐清 Javascript 裡面 Async Function 的概念，進而探究序列非同步的核心，最後輔以 Event Loop 作為圖像化的解釋。&lt;/p&gt;" />
+    <meta name="twitter:title" content="Wait！Await 和你想的不一樣！淺談非同步的 Parallel &amp; Seqential | 大臉與哈燒出版社"/>
+    <meta name="twitter:description" content="&lt;p&gt;在處理多個非同步操作的時候，大致上會分為並行 (Parallel) 和序列 (Sequential) 執行兩種情況。&lt;br&gt;本文將會從常見的應用邏輯切入，先釐清 Javascript 裡面 Async Function 的概念，進而探究序列非同步的核心，最後輔以 Event Loop 作為圖像化的解釋。&lt;/p&gt;"/>
     <script type="application/ld+json">
         {
-            "description": "&lt;p&gt;在處理多個非同步操作的時候，大致上會分為併發 (Parallel) 和序列 (Sequential) 執行兩種情況。&lt;br&gt;本文將會從常見的應用邏輯切入，先釐清 Javascript 裡面 Async Function 的概念，進而探究序列非同步的核心，最後輔以 Event Loop 作為圖像化的解釋。&lt;/p&gt;",
+            "description": "&lt;p&gt;在處理多個非同步操作的時候，大致上會分為並行 (Parallel) 和序列 (Sequential) 執行兩種情況。&lt;br&gt;本文將會從常見的應用邏輯切入，先釐清 Javascript 裡面 Async Function 的概念，進而探究序列非同步的核心，最後輔以 Event Loop 作為圖像化的解釋。&lt;/p&gt;",
             "author": { "@type": "Person", "name": "Dalian Wang" },
             "@type": "BlogPosting",
             "url": "http://example.com/async_parallel_sequential/index.html",
@@ -38,7 +38,7 @@
             },
             "name": "Dalian Wang"
             },
-            "headline": "非同步的 Parallel &amp; Seqential | 大臉與哈燒出版社",
+            "headline": "Wait！Await 和你想的不一樣！淺談非同步的 Parallel &amp; Seqential | 大臉與哈燒出版社",
             "datePublished": "2022-07-17T15:49:23.000Z",
             "mainEntityOfPage": {
                 "@type": "WebPage",
@@ -166,7 +166,7 @@
             <section class="inner">
                 <section class="inner-main">
                     <div class="post">
-    <article id="post-cl68syqs100035x5r9iru3nf5" class="article article-type-post" itemscope
+    <article id="post-cl69hcncc0004bp5r9dvm0o4n" class="article article-type-post" itemscope
     itemprop="blogPost">
 
     <div class="article-inner">
@@ -182,7 +182,7 @@
             
   
     <h1 class="article-title" itemprop="name">
-      非同步的 Parallel &amp; Seqential
+      Wait！Await 和你想的不一樣！淺談非同步的 Parallel &amp; Seqential
     </h1>
   
 
@@ -208,7 +208,7 @@
         </div>
 
         <div class="article-entry post-inner-html hairline" itemprop="articleBody">
-            <p>在處理多個非同步操作的時候，大致上會分為併發 (Parallel) 和序列 (Sequential) 執行兩種情況。<br>本文將會從常見的應用邏輯切入，先釐清 Javascript 裡面 Async Function 的概念，進而探究序列非同步的核心，最後輔以 Event Loop 作為圖像化的解釋。</p>
+            <p>在處理多個非同步操作的時候，大致上會分為並行 (Parallel) 和序列 (Sequential) 執行兩種情況。<br>本文將會從常見的應用邏輯切入，先釐清 Javascript 裡面 Async Function 的概念，進而探究序列非同步的核心，最後輔以 Event Loop 作為圖像化的解釋。</p>
 <span id="more"></span>
 
 <p><img src="https://images.unsplash.com/photo-1432753759888-b30b2bdac995?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2953&q=80"></p>
@@ -223,7 +223,7 @@ const printAfterOneSecond = (value) =&gt;
 arr.forEach((a) =&gt; printAfterOneSecond(a));
 </code></pre>
 <p>可以看到一秒後會同時印出陣列裡所有的元素。</p>
-<p>在實務上通常會搭配簡潔的 Array Method 來操作，以達到同時執行多個非同步的效果。這種情況我們稱作併發 (Parallel)。</p>
+<p>在實務上通常會搭配簡潔的 Array Method 來操作，以達到同時執行多個非同步的效果。這種情況我們稱作並行 (Parallel)。</p>
 <hr>
 <p>如果要談到非同步，API 類型的 AJAX 操作大概是最常見的應用。</p>
 <p>以下是一個簡單的範例，模擬同時執行多個 AJAX Request 的結果。為了方便講解，僅將回傳的結果印出而不儲存。</p>
@@ -425,25 +425,25 @@ const getAllData = () =&gt; &#123;
   
   
     <a href="/front-end-interview/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-caption">上一篇</div>
-      <div class="article-nav-title">前端工程師面試心得</div>
+      <div class="article-nav-caption">前の記事</div>
+      <div class="article-nav-title">Junior Front-End 面試心得 - 2022 Q1</div>
     </a>
   
 </nav>
 
 
     <section class="share">
-        <div class="share-title">分享</div>
+        <div class="share-title">シェア</div>
         <a class="share-item" target="_blank"
-            href="https://twitter.com/share?text=非同步的 Parallel & Seqential - 大臉與哈燒出版社&url=http%3A%2F%2Fexample.com%2Fasync_parallel_sequential%2F">
+            href="https://twitter.com/share?text=Wait！Await 和你想的不一樣！淺談非同步的 Parallel & Seqential - 大臉與哈燒出版社&url=http%3A%2F%2Fexample.com%2Fasync_parallel_sequential%2F">
             <ion-icon name="logo-twitter"></ion-icon>
         </a>
         <a class="share-item" target="_blank"
-            href="https://www.facebook.com/sharer.php?title=非同步的 Parallel & Seqential - 大臉與哈燒出版社&u=http%3A%2F%2Fexample.com%2Fasync_parallel_sequential%2F">
+            href="https://www.facebook.com/sharer.php?title=Wait！Await 和你想的不一樣！淺談非同步的 Parallel & Seqential - 大臉與哈燒出版社&u=http%3A%2F%2Fexample.com%2Fasync_parallel_sequential%2F">
             <ion-icon name="logo-facebook"></ion-icon>
         </a>
         <!-- <a class="share-item" target="_blank"
-            href="https://service.weibo.com/share/share.php?title=非同步的 Parallel & Seqential - 大臉與哈燒出版社&url=http://example.com/async_parallel_sequential/&pic=">
+            href="https://service.weibo.com/share/share.php?title=Wait！Await 和你想的不一樣！淺談非同步的 Parallel & Seqential - 大臉與哈燒出版社&url=http://example.com/async_parallel_sequential/&pic=">
             <div class="n-icon n-icon-weibo"></div>
         </a> -->
     </section>
@@ -501,11 +501,11 @@ const getAllData = () =&gt; &#123;
       <ul>
         
           <li>
-            <a href="/async_parallel_sequential/">非同步的 Parallel &amp; Seqential</a>
+            <a href="/async_parallel_sequential/">Wait！Await 和你想的不一樣！淺談非同步的 Parallel &amp; Seqential</a>
           </li>
         
           <li>
-            <a href="/front-end-interview/">前端工程師面試心得</a>
+            <a href="/front-end-interview/">Junior Front-End 面試心得 - 2022 Q1</a>
           </li>
         
       </ul>
