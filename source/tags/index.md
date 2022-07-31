@@ -5,7 +5,7 @@ layout: friends
 ---
 
 ## 技術交流
-- 2022/7/17：[非同步的 Parallel & Seqential](http://blog.bigface.tw/async_parallel_sequential/)
+- 2022/7/17：[非同步的 Parallel & Seqential](/async_parallel_sequential/)
 
 ## 心得分享
-- 2022/6/18：[前端工程師面試心得](http://blog.bigface.tw/front-end-interview/)
+- 2022/6/18：[前端工程師面試心得](/front-end-interview/)
