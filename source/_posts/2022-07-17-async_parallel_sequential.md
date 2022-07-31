@@ -1,11 +1,11 @@
 ---
-title: 非同步的 Parallel & Seqential
+title: Wait！Await 和你想的不一樣！淺談非同步的 Parallel & Seqential
 date: 2022-07-17 23:49:23
 tags: 技術交流
 cover: https://images.unsplash.com/photo-1432753759888-b30b2bdac995?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2953&q=80
 ---
 
-在處理多個非同步操作的時候，大致上會分為併發 (Parallel) 和序列 (Sequential) 執行兩種情況。
+在處理多個非同步操作的時候，大致上會分為並行 (Parallel) 和序列 (Sequential) 執行兩種情況。
 本文將會從常見的應用邏輯切入，先釐清 Javascript 裡面 Async Function 的概念，進而探究序列非同步的核心，最後輔以 Event Loop 作為圖像化的解釋。
 
 <!-- more -->
@@ -26,7 +26,7 @@ arr.forEach((a) => printAfterOneSecond(a));
 ```
 可以看到一秒後會同時印出陣列裡所有的元素。
 
-在實務上通常會搭配簡潔的 Array Method 來操作，以達到同時執行多個非同步的效果。這種情況我們稱作併發 (Parallel)。
+在實務上通常會搭配簡潔的 Array Method 來操作，以達到同時執行多個非同步的效果。這種情況我們稱作並行 (Parallel)。
 
 ---
 

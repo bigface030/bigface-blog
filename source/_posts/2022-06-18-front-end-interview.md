@@ -1,11 +1,11 @@
 ---
-title: 前端工程師面試心得
+title: Junior Front-End 面試心得 - 2022 Q1
 date: 2022-06-18 13:23:21
 tags: 心得分享
 cover: https://images.unsplash.com/photo-1423592707957-3b212afa6733?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80
 ---
 
-這篇文章主要分享的是 2022 上半年前端工程師的求職過程，全文包含投遞履歷和面試心得兩個部分。
+這篇文章主要分享的是 2022 Q1 前端工程師的求職過程，全文包含投遞履歷和面試心得兩個部分。
 投遞履歷部分主要針對前端工程師這個工作和其他工作領域的不同來做說明，而面試心得部分則盡量去除主觀因素的影響並以客觀的角度陳述整個面試過程。
 
 <!-- more -->
