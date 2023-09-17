@@ -7,8 +7,6 @@ cover: https://images.unsplash.com/photo-1516216628859-9bccecab13ca?ixlib=rb-4.0
 
 本文將從 web worker 最基本的用法切入。除了程式面的語法以外，同時針對概念以及 design pattern 進行解釋，並在這個過程中逐漸模擬出真實世界的使用情境。
 
-本文的範例程式碼：https://github.com/bigface030/web-worker-with-parallel-requests
-
 <!-- more -->
 
 ![](https://images.unsplash.com/photo-1516216628859-9bccecab13ca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80)
@@ -174,7 +172,10 @@ viaWorker('咪咕嚕嚕').then(({ id, drink }) => {
 不過在瀏覽器中並不是想開多少 thread 就有多少，數量上限通常會和 CPU 的核心數有關，這部分會需要多多注意。
 
 ## 結語
-為了方便解釋，本文的範例是非常簡化的版本，有些面向礙於篇幅並沒有提及，包含但不限於
+為了方便解釋，本文的範例是非常簡化的版本，範例程式碼如下：
+https://github.com/bigface030/web-worker-with-parallel-requests
+
+有些面向礙於篇幅並沒有提及，包含但不限於
 - 送到 web worker 的格式該如何驗證？
 - web worker 處理過程發生錯誤怎麼辦？無法回傳訊息怎麼辦？
 - 不同 worker 之間的合作關係該怎麼處理？
