@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
     
-    <title>為了寫文章，我開了一間飲料店！淺談 web worker 針對併發需求的實作 | 大臉與哈燒出版社</title>
+    <title>為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作 | 大臉與哈燒出版社</title>
 
     <meta name="description" content="&lt;p&gt;本文將從 web worker 最基本的用法切入。除了程式面的語法以外，同時針對概念以及 design pattern 進行解釋，並在這個過程中逐漸模擬出真實世界的使用情境。&lt;/p&gt;">
     <meta name="keywords" content="">
@@ -15,14 +15,14 @@
 
     <meta property="og:locale" content="en" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content= "為了寫文章，我開了一間飲料店！淺談 web worker 針對併發需求的實作 | 大臉與哈燒出版社"  />
+    <meta property="og:title" content= "為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作 | 大臉與哈燒出版社"  />
     <meta property="og:description" content= "&lt;p&gt;本文將從 web worker 最基本的用法切入。除了程式面的語法以外，同時針對概念以及 design pattern 進行解釋，並在這個過程中逐漸模擬出真實世界的使用情境。&lt;/p&gt;" />
     <meta property="og:url" content="http://blog.bigface.tw/web-worker-with-parallel-requests/index.html" />
     <meta property="og:site_name" content="" />
     <meta property="article:author" content="Dalian Wang" />
     <meta property="article:publisher" content="" />
     <meta property="og:description" content="&lt;p&gt;本文將從 web worker 最基本的用法切入。除了程式面的語法以外，同時針對概念以及 design pattern 進行解釋，並在這個過程中逐漸模擬出真實世界的使用情境。&lt;/p&gt;" />
-    <meta name="twitter:title" content="為了寫文章，我開了一間飲料店！淺談 web worker 針對併發需求的實作 | 大臉與哈燒出版社"/>
+    <meta name="twitter:title" content="為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作 | 大臉與哈燒出版社"/>
     <meta name="twitter:description" content="&lt;p&gt;本文將從 web worker 最基本的用法切入。除了程式面的語法以外，同時針對概念以及 design pattern 進行解釋，並在這個過程中逐漸模擬出真實世界的使用情境。&lt;/p&gt;"/>
     <script type="application/ld+json">
         {
@@ -38,7 +38,7 @@
             },
             "name": "Dalian Wang"
             },
-            "headline": "為了寫文章，我開了一間飲料店！淺談 web worker 針對併發需求的實作 | 大臉與哈燒出版社",
+            "headline": "為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作 | 大臉與哈燒出版社",
             "datePublished": "2023-06-29T15:49:23.000Z",
             "mainEntityOfPage": {
                 "@type": "WebPage",
@@ -166,7 +166,7 @@
             <section class="inner">
                 <section class="inner-main">
                     <div class="post">
-    <article id="post-clji2p9k800013vkfc3234qvh" class="article article-type-post" itemscope
+    <article id="post-clmnjfty6000c04kf714nay2k" class="article article-type-post" itemscope
     itemprop="blogPost">
 
     <div class="article-inner">
@@ -182,7 +182,7 @@
             
   
     <h1 class="article-title" itemprop="name">
-      為了寫文章，我開了一間飲料店！淺談 web worker 針對併發需求的實作
+      為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作
     </h1>
   
 
@@ -317,7 +317,8 @@ viaWorker(&#39;咪咕嚕嚕&#39;).then((&#123; id, drink &#125;) =&gt; &#123;
 </ul>
 <p>也就是說，沒有客人或人少的時候我可以只用一個人力去做飲料，尖峰時刻再增加人力來上班，<br>如此一來就可以增加更多的彈性，最小化人事成本。</p>
 <p>不過在瀏覽器中並不是想開多少 thread 就有多少，數量上限通常會和 CPU 的核心數有關，這部分會需要多多注意。</p>
-<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>為了方便解釋，本文的範例是非常簡化的版本，有些面向礙於篇幅並沒有提及，包含但不限於</p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>為了方便解釋，本文的範例是非常簡化的版本，範例程式碼如下：<br><a target="_blank" rel="noopener" href="https://github.com/bigface030/web-worker-with-parallel-requests">https://github.com/bigface030/web-worker-with-parallel-requests</a></p>
+<p>有些面向礙於篇幅並沒有提及，包含但不限於</p>
 <ul>
 <li>送到 web worker 的格式該如何驗證？</li>
 <li>web worker 處理過程發生錯誤怎麼辦？無法回傳訊息怎麼辦？</li>
@@ -355,15 +356,15 @@ viaWorker(&#39;咪咕嚕嚕&#39;).then((&#123; id, drink &#125;) =&gt; &#123;
     <section class="share">
         <div class="share-title">分享</div>
         <a class="share-item" target="_blank"
-            href="https://twitter.com/share?text=為了寫文章，我開了一間飲料店！淺談 web worker 針對併發需求的實作 - 大臉與哈燒出版社&url=http%3A%2F%2Fblog.bigface.tw%2Fweb-worker-with-parallel-requests%2F">
+            href="https://twitter.com/share?text=為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作 - 大臉與哈燒出版社&url=http%3A%2F%2Fblog.bigface.tw%2Fweb-worker-with-parallel-requests%2F">
             <ion-icon name="logo-twitter"></ion-icon>
         </a>
         <a class="share-item" target="_blank"
-            href="https://www.facebook.com/sharer.php?title=為了寫文章，我開了一間飲料店！淺談 web worker 針對併發需求的實作 - 大臉與哈燒出版社&u=http%3A%2F%2Fblog.bigface.tw%2Fweb-worker-with-parallel-requests%2F">
+            href="https://www.facebook.com/sharer.php?title=為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作 - 大臉與哈燒出版社&u=http%3A%2F%2Fblog.bigface.tw%2Fweb-worker-with-parallel-requests%2F">
             <ion-icon name="logo-facebook"></ion-icon>
         </a>
         <!-- <a class="share-item" target="_blank"
-            href="https://service.weibo.com/share/share.php?title=為了寫文章，我開了一間飲料店！淺談 web worker 針對併發需求的實作 - 大臉與哈燒出版社&url=http://blog.bigface.tw/web-worker-with-parallel-requests/&pic=">
+            href="https://service.weibo.com/share/share.php?title=為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作 - 大臉與哈燒出版社&url=http://blog.bigface.tw/web-worker-with-parallel-requests/&pic=">
             <div class="n-icon n-icon-weibo"></div>
         </a> -->
     </section>
@@ -421,7 +422,7 @@ viaWorker(&#39;咪咕嚕嚕&#39;).then((&#123; id, drink &#125;) =&gt; &#123;
       <ul>
         
           <li>
-            <a href="/web-worker-with-parallel-requests/">為了寫文章，我開了一間飲料店！淺談 web worker 針對併發需求的實作</a>
+            <a href="/web-worker-with-parallel-requests/">為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作</a>
           </li>
         
           <li>
