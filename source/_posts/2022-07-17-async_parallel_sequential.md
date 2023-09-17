@@ -2,7 +2,7 @@
 title: Wait！Await 和你想的不一樣！淺談非同步的 Parallel & Seqential
 date: 2022-07-17 23:49:23
 tags: 技術交流
-cover: https://images.unsplash.com/photo-1432753759888-b30b2bdac995?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2953&q=80
+cover: https://images.unsplash.com/photo-1532444458054-01a7dd3e9fca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2741&q=80
 ---
 
 在處理多個非同步操作的時候，大致上會分為並行 (Parallel) 和序列 (Sequential) 執行兩種情況。
@@ -10,7 +10,7 @@ cover: https://images.unsplash.com/photo-1432753759888-b30b2bdac995?ixlib=rb-1.2
 
 <!-- more -->
 
-![](https://images.unsplash.com/photo-1432753759888-b30b2bdac995?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2953&q=80)
+![](https://images.unsplash.com/photo-1532444458054-01a7dd3e9fca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2741&q=80)
 
 ## Parallel 最常見的應用
 先來看一段程式碼：
