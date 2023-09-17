@@ -1,11 +1,13 @@
 ---
-title: 為了寫文章，我開了一間飲料店！淺談 web worker 針對併發需求的實作
+title: 為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作
 date: 2023-06-29 23:49:23
 tags: 技術交流
 cover: https://images.unsplash.com/photo-1516216628859-9bccecab13ca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80
 ---
 
 本文將從 web worker 最基本的用法切入。除了程式面的語法以外，同時針對概念以及 design pattern 進行解釋，並在這個過程中逐漸模擬出真實世界的使用情境。
+
+本文的範例程式碼：https://github.com/bigface030/web-worker-with-parallel-requests
 
 <!-- more -->
 
