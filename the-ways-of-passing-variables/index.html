@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+    <title>從 C 語言重新認識 Javascript - 關於變數傳遞的本質 | 大臉與哈燒出版社</title>
+
+    <meta name="description" content="&lt;p&gt;Javascript 到底是 pass by value 還是 pass by reference？嘗試向初學者時的自己解釋 Javascript 入門階段中最不能理解的事情。&lt;/p&gt;">
+    <meta name="keywords" content="">
+
+    
+
+    <meta property="og:locale" content="en" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content= "從 C 語言重新認識 Javascript - 關於變數傳遞的本質 | 大臉與哈燒出版社"  />
+    <meta property="og:description" content= "&lt;p&gt;Javascript 到底是 pass by value 還是 pass by reference？嘗試向初學者時的自己解釋 Javascript 入門階段中最不能理解的事情。&lt;/p&gt;" />
+    <meta property="og:url" content="http://blog.bigface.tw/the-ways-of-passing-variables/index.html" />
+    <meta property="og:site_name" content="" />
+    <meta property="article:author" content="Dalian Wang" />
+    <meta property="article:publisher" content="" />
+    <meta property="og:description" content="&lt;p&gt;Javascript 到底是 pass by value 還是 pass by reference？嘗試向初學者時的自己解釋 Javascript 入門階段中最不能理解的事情。&lt;/p&gt;" />
+    <meta name="twitter:title" content="從 C 語言重新認識 Javascript - 關於變數傳遞的本質 | 大臉與哈燒出版社"/>
+    <meta name="twitter:description" content="&lt;p&gt;Javascript 到底是 pass by value 還是 pass by reference？嘗試向初學者時的自己解釋 Javascript 入門階段中最不能理解的事情。&lt;/p&gt;"/>
+    <script type="application/ld+json">
+        {
+            "description": "&lt;p&gt;Javascript 到底是 pass by value 還是 pass by reference？嘗試向初學者時的自己解釋 Javascript 入門階段中最不能理解的事情。&lt;/p&gt;",
+            "author": { "@type": "Person", "name": "Dalian Wang" },
+            "@type": "BlogPosting",
+            "url": "http://blog.bigface.tw/the-ways-of-passing-variables/index.html",
+            "publisher": {
+            "@type": "Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "http://blog.bigface.twundefined"
+            },
+            "name": "Dalian Wang"
+            },
+            "headline": "從 C 語言重新認識 Javascript - 關於變數傳遞的本質 | 大臉與哈燒出版社",
+            "datePublished": "2024-04-18T16:00:00.000Z",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "http://blog.bigface.tw/the-ways-of-passing-variables/index.html"
+            },
+            "@context": "http://schema.org"
+        }
+    </script>
+
+
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐢</text></svg>">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/dist/build.css?v=1654266144177.css">
+
+
+    
+<link rel="stylesheet" href="/dist/custom.css?v=1654266144177.css">
+
+
+    <script>
+        window.isPost = true
+        window.aomori = {
+            
+            
+            
+        }
+        window.aomori_logo_typed_animated = false
+        window.aomori_search_algolia = false
+
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3FXMCYL94W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-3FXMCYL94W');
+    </script>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+
+    <div class="container">
+    <header class="header">
+        <div class="header-type">
+            
+            <div class="header-type-inner">
+                
+                    <a class="header-type-title" href="/">大臉與哈燒出版社</a>
+                
+    
+                
+            </div>
+        </div>
+        <div class="header-menu">
+            <div class="header-menu-inner">
+                
+                <a href="/">Home</a>
+                
+                <a href="/archives">Archives</a>
+                
+                <a href="/tags">Tags</a>
+                
+                <a href="/about">About</a>
+                
+            </div>
+            <div class="header-menu-social">
+                
+            </div>
+        </div>
+
+        <div class="header-menu-mobile">
+            <div class="header-menu-mobile-inner" id="mobile-menu-open">
+                <i class="icon icon-menu"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="header-menu-mobile-menu">
+        <div class="header-menu-mobile-menu-bg"></div>
+        <div class="header-menu-mobile-menu-wrap">
+            <div class="header-menu-mobile-menu-inner">
+                <div class="header-menu-mobile-menu-close" id="mobile-menu-close">
+                    <i class="icon icon-cross"></i>
+                </div>
+                <div class="header-menu-mobile-menu-list">
+                    
+                    <a href="/">Home</a>
+                    
+                    <a href="/archives">Archives</a>
+                    
+                    <a href="/tags">Tags</a>
+                    
+                    <a href="/about">About</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <div class="container">
+        <div class="main">
+            <section class="inner">
+                <section class="inner-main">
+                    <div class="post">
+    <article id="post-clvqd500g000ahg5rbfygcl0a" class="article article-type-post" itemscope
+    itemprop="blogPost">
+
+    <div class="article-inner">
+
+        
+          
+        
+        
+        
+
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      從 C 語言重新認識 Javascript - 關於變數傳遞的本質
+    </h1>
+  
+
+        </header>
+        
+
+        <div class="article-more-info article-more-info-post hairline">
+
+            <div class="article-date">
+  <time datetime="2024-04-18T16:00:00.000Z" itemprop="datePublished">2024-04-19</time>
+</div>
+
+            
+
+            
+            <div class="article-tag">
+                <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E8%A1%93%E4%BA%A4%E6%B5%81/" rel="tag">技術交流</a></li></ul>
+            </div>
+            
+
+            
+
+        </div>
+
+        <div class="article-entry post-inner-html hairline" itemprop="articleBody">
+            <p>Javascript 到底是 pass by value 還是 pass by reference？嘗試向初學者時的自己解釋 Javascript 入門階段中最不能理解的事情。</p>
+<span id="more"></span>
+
+<p><img src="https://images.unsplash.com/photo-1515173522882-fa8de74f27f6?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA=="></p>
+<h2 id="發現問題"><a href="#發現問題" class="headerlink" title="發現問題"></a>發現問題</h2><p>在 Javascript 中，一個 object 變數作為函式的引數傳遞時，可以在函式內修改該變數的屬性，但不能在函式內針對該變數重新賦值。</p>
+<p>以底下程式碼為例：</p>
+<pre><code class="javascript=">let arr1 = [1, 2, 3];
+fn(arr1);
+console.log(arr1);    // [4, 2, 3]
+
+function fn(arr2) &#123;
+    arr2[0] = 4;
+    arr2 = [3, 4, 5];
+&#125;
+</code></pre>
+<p>執行完的結果會印出 <code>arr1</code> 為 <code>[4, 2, 3]</code>。</p>
+<p>看似理所當然的行為，到底為什麼會這樣？我有思考過類似的問題嗎？<br>我不禁好奇當時那個身為 Javascript 新手的自己，是如何學習的。</p>
+<p>回到最初的起點，我打開了塵封已久的初學者填鴨式筆記，上面寫著：</p>
+<blockquote>
+<p>Javascript 的變數傳遞，是 <strong>pass by value</strong> 和 <strong>pass by reference</strong> 的綜合。</p>
+</blockquote>
+<p>這到底是什麼意思? 又代表了什麼? 初步猜測我當初也只是用行為去記憶而已。</p>
+<p>為了進一步確認當初的認知，請教了 GPT 和 Google 大神，才發現針對 Javascript 的變數傳遞這件事，各方說法都有所不同。大部分的人說是 <strong>pass by value + pass by reference</strong>，但也有人說是 <strong>pass by value</strong>，有人說是 <strong>pass by sharing</strong>。仔細看內文敘述，大家討論的明明都是同一件事，但就是會有不同的詮釋方式，得出不同的結論。</p>
+<p>顯然<strong>不是大家對 Javascript 的認知不同，就是大家對這些術語的定義不同</strong>。</p>
+<p>幸好在眾多術語中，Wiki 上可以找到 <strong>reference</strong> 這個名詞的定義：</p>
+<blockquote>
+<p>In computer programming, a reference is a value that enables a program to indirectly access a particular datum, such as a variable’s value or a record, in the computer’s memory or in some other storage device.</p>
+<p>對於電腦科學來說，reference 是一個值，能夠被程式用來間接訪問某個資料對象。</p>
+</blockquote>
+<p>好了，我知道 <strong>reference</strong> 是什麼了，然後呢？</p>
+<h2 id="觀察行為形成假設"><a href="#觀察行為形成假設" class="headerlink" title="觀察行為形成假設"></a>觀察行為形成假設</h2><p>讓我們將剛剛的程式對照以下這段程式：</p>
+<pre><code class="javascript=">let arr1 = [1, 2, 3];
+let arr2 = arr1;
+arr2[0] = 4;
+arr2 = [3, 4, 5];
+console.log(arr1);    // [4, 2, 3]
+</code></pre>
+<p>仔細觀察後，發現變數在函式之間的傳遞，和變數複製，兩段程式的結果是一模一樣的。</p>
+<p>稍微寫過一點 Javascript 的人應該就會知道，第 2 行程式代表的並不是真正的複製，我們針對 <code>arr2</code> 內部屬性的修改還是會修改到 <code>arr1</code> 的資料。<br>若要真正創建一個新的物件並複製 value，需要使用 <code>Array.slice()</code> 或是 <code>spread operator</code> 等方法進行<strong>淺拷貝</strong>。</p>
+<p>我們姑且針對第 2 行程式 <code>arr2</code> 的複製行為，視為某種對 <code>arr1</code> <code>[1, 2, 3]</code> 的間接訪問，並稱作 <strong>reference</strong>。也就是說以下兩句成立：</p>
+<ul>
+<li><code>arr2</code> 複製的是 <code>arr1</code> <code>[1, 2, 3]</code> 的 <strong>reference</strong>。</li>
+<li><code>arr2</code> 是 <code>arr1</code> <code>[1, 2, 3]</code> <strong>reference</strong> 的 copy。</li>
+</ul>
+<p>因此我們可以針對 Javascript 對於 object 變數傳遞的行為，得到一個推測：</p>
+<blockquote>
+<p>object 變數作為引數在函式內的操作，等同於在操作這個變數 <strong>reference</strong> 的 copy。</p>
+</blockquote>
+<h2 id="用底層原理驗證假設"><a href="#用底層原理驗證假設" class="headerlink" title="用底層原理驗證假設"></a>用底層原理驗證假設</h2><p>至於什麼是 <strong>reference</strong>？ <strong>reference</strong> 的 copy 是什麼？為什麼操作它，會根據是重新賦值或是修改，而有不同的行為？</p>
+<p>要了解這件事我們需要從底層去看。</p>
+<p>我們以相對於 Javascript 較為 low-level 的 C 語言為例。C 語言可以透過指標的語法，手動管理程式中記憶體的使用。</p>
+<h3 id="reference-是什麼"><a href="#reference-是什麼" class="headerlink" title="reference 是什麼"></a>reference 是什麼</h3><p><img src="https://i.imgur.com/Hw4Cdk3.jpeg" alt="0503.001"></p>
+<p>我們知道在 C 語言中，<strong>陣列變數的本質是指向陣列第一個元素的指標</strong>。<br>也就是說 <code>arr1</code> 這個變數作為指標，在其對應記憶體位置所存的值，是陣列第一個元素的地址。</p>
+<p>此時 <code>arr1</code> 對應位置存的 <code>0x125</code> 滿足 <strong>reference</strong> 的定義，是一個地址的值，能夠被程式用來間接訪問 <code>[1, 2, 3]</code> 中的 <code>1</code> 這個資料對象。</p>
+<p>而因為在 C 語言中陣列是一塊連續的記憶體，可以透過這個第一個地址去拿到第二個，第三個，甚至整個陣列的資料。<br>因此我們可以說：<code>0x125</code> 是 <code>[1, 2, 3]</code> 的 <strong>reference</strong>。</p>
+<h3 id="reference-copy-是什麼"><a href="#reference-copy-是什麼" class="headerlink" title="reference copy 是什麼"></a>reference copy 是什麼</h3><p><img src="https://i.imgur.com/02fcAps.gif" alt="04172"></p>
+<pre><code class="c=">// 整數變數的複製
+int n = 1;
+int m = n;
+
+// 陣列變數的複製
+int arr1[] = &#123;1, 2, 3&#125;;
+int *arr2 = arr1;
+</code></pre>
+<p>在整數變數複製的情況，我們將存在 <code>n</code> 對應的地址 <code>0x123</code> 這個位置的 value，複製一份並存到 <code>m</code> 對應的 <code>0x124</code> 位置。</p>
+<p>而在陣列變數複製的情況，我們一樣將存在 <code>arr1</code> 對應位置的 value，複製一份並存到 <code>arr2</code> 的對應位置。所以在 <code>arr2</code> 這個對應位置存的值同樣是第一個元素的地址，並指向陣列第一個元素。</p>
+<p>此時 <code>arr2</code> 針對 <code>arr1</code> 的複製行為，則是將 <code>0x125</code> 作為 <code>[1, 2, 3]</code> 的 <strong>reference</strong> 然後複製一份並存到其對應的位置。這就是 <strong>reference</strong> copy 的本質。</p>
+<h3 id="重新賦值和修改"><a href="#重新賦值和修改" class="headerlink" title="重新賦值和修改"></a>重新賦值和修改</h3><p><img src="https://i.imgur.com/fKhvIA5.gif" alt="04173"></p>
+<pre><code class="c=">int arr1[] = &#123;1, 2, 3&#125;;
+int *arr2 = arr1;
+
+// 修改陣列變數內指定元素
+arr2[0] = 4;
+
+// 將陣列變數重新賦值
+int arr3[] = &#123;3, 4, 5&#125;;
+arr2 = arr3;
+</code></pre>
+<p>在第 5 行中，我們將 <code>4</code> 這個整數傳入 <code>arr2</code> 所指向的陣列第一個元素。因為僅是修改該元素對應的記憶體位置所存的值，並沒有修改到地址，所以 <code>arr1</code> 和 <code>arr2</code> 依舊指向同一個陣列的第一個元素，得以用 <code>0x125</code> 這個地址作為 <strong>reference</strong> 去間接訪問 <code>4</code> 這個最新的資料對象。</p>
+<p>而重新賦值的情況，事實上則是把 <code>arr2</code> 指向另一個陣列的第一個元素，也就是用 <code>0x128</code> 這個地址作為 <strong>reference</strong> 去間接訪問 <code>[3, 4, 5]</code> 中的 <code>3</code> 這個資料對象。</p>
+<p>至於 C 語言中之所以沒有 <code>arr = &#123;3, 4, 5&#125;</code> 這個語法？那是因為對於一個指標變數來說，重新賦值就等同於傳入另外一個地址。而這個錯誤語法中，等號右側的 <code>&#123;3, 4, 5&#125;</code> 是一個常數，還沒有被我們存進記憶體中，自然也沒有可供操作的記憶體地址。</p>
+<p>經過一連串的操作後，此時 <code>arr1</code> 指向原陣列 <code>[4, 2, 3]</code> 的第一個元素 <code>4</code>，<code>arr2</code> 則是指向新陣列 <code>[3, 4, 5]</code> 的第一個元素 <code>3</code>。</p>
+<h3 id="回到函式"><a href="#回到函式" class="headerlink" title="回到函式"></a>回到函式</h3><p><img src="https://i.imgur.com/2I3YJXP.jpeg" alt="04174.001"></p>
+<pre><code class="c=">void fn(int *arr2);
+
+int main(void) &#123;
+  int arr1[] = &#123;1, 2, 3&#125;; 
+  int *arr2 = arr1;
+  fn(arr1);
+&#125;
+</code></pre>
+<p>可以發現在 C 語言中，變數作為引數在函式之間的傳遞，就等同於變數複製，兩者的行為是一致的：都是將 <code>0x125</code> 作為 <code>[1, 2, 3]</code> 的 <strong>reference</strong> 然後複製一份並存到其對應的位置。</p>
+<p>這是因為記憶體的分配設計，讓函式之間有著不同的作用域，無法直接存取不同作用域的變數資料。(stack)</p>
+<p>所以當我們在 <code>fn</code> 函式內完成一些實作，例如針對引數的變數重新賦值或屬性修改，結果也會等同於直接在 <code>main</code> 函式進行實作，其行為是一致的。</p>
+<h2 id="只靠-Javascript-無法解釋的事情"><a href="#只靠-Javascript-無法解釋的事情" class="headerlink" title="只靠 Javascript 無法解釋的事情"></a>只靠 Javascript 無法解釋的事情</h2><p>我們已經透過 C 語言了解 <strong>reference</strong> 的概念以及變數傳遞的原理，並可以得到這樣的結論：</p>
+<blockquote>
+<p>在 C 語言中，變數作為引數在函式之間的傳遞是透過複製來實現的。且陣列操作的本質是操作它的 reference。</p>
+</blockquote>
+<p>可以通過 C 語言的這個行為，去呼應我們先前針對 Javascript 的推斷：</p>
+<blockquote>
+<p>在 Javascript 中，object 作為引數在函式內的操作，等同於在操作這個 reference 的 copy。</p>
+</blockquote>
+<p>到這裡你可能會想說，<strong>難道我們用 C 語言去解釋變數傳遞的行為，就能完全代表 Javascript 嗎?</strong></p>
+<p>的確不能。Javascript 的實作一定也沒有那麼簡單，簡單到只要隨便畫個圖就可以完整地解釋。</p>
+<p>以陣列來舉例，C 語言和 Javascript 的 Array 光底層的實作就有很大的差別。</p>
+<p>前面有提到，C 語言的陣列是一塊連續的記憶體；而 Javascript 的 Array 相較於 C 語言是更為複雜的結構，實作上可能包含某種不連續，以換來某些更為彈性的操作方法。(如 Linked list 的 non-numeric index, Stack 的 push, pop 等方法…)</p>
+<p>這也正是高階語言和低階語言的差異：<strong>「high-level 的語法比起 low-level 較為簡單好用且較具彈性，但這同時也表示，在 high-level 語言的設計原理中，包含 low-level 語言當中某些操作的封裝。」</strong></p>
+<p>我們有時候還是需要將自己拉回 low-level 的視角，去反思 high-level 語言的設計原理。</p>
+<p>儘管 Javascript 已經幫我們處理好記憶體的問題，不需要像寫 C 語言的時候一樣，煩惱要如何配置、什麼時候要釋放，但當我們要試著解釋 <strong>reference</strong> 的概念和變數傳遞的行為時，還是需要引用到 C 語言中的指標這個語法。</p>
+<p>這同時也意味著，在 Javascript 中我們無法從 <strong>reference</strong> 的角度充分地解釋 object 變數傳遞的行為原理，我們甚至無法只單靠 Javascript 去解釋 <strong>reference</strong> 這個概念。</p>
+<p>所以我們才會需要用 C 語言，不能說完全代表 Javascript，但只是透過 low-level 的一些語法特性，來針對 high-level 中變數傳遞的行為，試著給出一個解釋，一個更為根本的理解罷了。</p>
+<h2 id="總結：關於名詞定義這回事"><a href="#總結：關於名詞定義這回事" class="headerlink" title="總結：關於名詞定義這回事"></a>總結：關於名詞定義這回事</h2><p>可能正是因為發現到高階語言中無法完整解釋變數傳遞的概念，但每次又都要回到低階語言去從底層開始解釋很麻煩，所以前人們開始導入一些名詞如 <strong>pass by value</strong>, <strong>pass by reference</strong> 等等，嘗試透過這些名詞，不僅簡化底層知識的描述也降低討論的門檻。</p>
+<p>但這些沒有被完整定義的名詞一旦被氾濫使用，尤其又被拿來教導新手時，就很容易造成人們的誤會。</p>
+<p>舉例來說，作為 C 語言的擴充，C++ 有 <strong>reference 語法</strong>，可以確實地讓變數在函式間傳遞時，得以修改該引數的地址。</p>
+<p>而正因為 <strong>pass by reference</strong> 中的 <strong>reference</strong> 沒有被定義好，到底指的是廣義中電腦科學的 <strong>reference</strong>，還是狹義中 C++ 的 <strong>reference 語法</strong>，</p>
+<p>所以 C 語言作為 C++ 的原型，會了方便區分，普遍還是會被認為是一個 <strong>pass by value</strong> 的語言。</p>
+<p>但我們可以看看 CS50 中的 L4 是怎麼說的：</p>
+<blockquote>
+<p>Notice that variables are not passed by value but by reference. That is, the addresses of a and b are provided to the function. Therefore, the swap function can know where to make changes to the actual a and b from the main function.</p>
+</blockquote>
+<p>即使我們知道 C++ 語言的 pointer 和 reference 不一樣，一個會對參考 copy 一個不會，</p>
+<p>但對於初學者來說，又為什麼要去爭論於名詞？<strong>了解電腦科學中的 <strong>reference</strong> 這個概念以及在他入門的語言當中實作的行為才是最重要的。</strong>（註：CS50 使用 C 語言作為入門）</p>
+<p><strong>reference</strong> 本質上就只是代表一個<strong>間接訪問</strong>的概念，是<strong>一個值，能夠被程式用來間接訪問某個資料對象</strong>。而不論是 C 語言的 pointer 還是 C++ 的 reference，都只是根據這個概念去實作的語法。</p>
+<p><strong>pass by XXX</strong> 只是一種歸納法，為了方便不同程式語言之間的溝通，用來統稱該語言針對變數傳遞這個行為的結果。</p>
+<p>在某些語境和討論底下，這個名詞確實可以帶來幫助；但是我們<strong>不能倒果為因，嘗試用這短短幾個字去說明特定語言針對變數傳遞的方式</strong>。更不能以某個特定語言針對 <strong>reference</strong> 的實作，去囊括整個電腦科學的概念。</p>
+<h3 id="我的看法"><a href="#我的看法" class="headerlink" title="我的看法"></a>我的看法</h3><p>回到最初的問題，現在的我會如何對還是初學者時的自己，解釋關於變數傳遞這件事？</p>
+<p>確實對於用 Javascript 入門的程式新手，是很難完全理解 <strong>reference</strong> 這個概念的。我想我會先從宏觀電腦科學的角度描述，這件事情的本質是<strong>為了減少值的複製</strong>，並 Javascript 當中物件的變數傳遞就是依照這個概念實作。</p>
+<p>等了解這個前提之後，再以「<strong>pass by value</strong> 和 <strong>pass by reference</strong> 的綜合」做為總結。只要不牽涉不同語言之間的比較的話，這樣的名詞引用我想也不會有牽涉爭議的問題。</p>
+<p>重點還是在於明白 Javascript 中變數傳遞會有怎樣的行為，同時在結合 <strong>mutable</strong>, <strong>immutable</strong> 的概念之後，能夠分辨在哪些情況下應該分別使用哪種寫法。這也會和日後寫出來的程式的<strong>適度抽象化</strong>有高度的相關。</p>
+<p>說了這麼多，最重要的一點，當然還是要因材施教。</p>
+
+        </div>
+
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+<nav class="article-nav">
+  
+  
+    <a href="/web-worker-with-parallel-requests/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-caption">上一篇</div>
+      <div class="article-nav-title">為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作</div>
+    </a>
+  
+</nav>
+
+
+    <section class="share">
+        <div class="share-title">分享</div>
+        <a class="share-item" target="_blank"
+            href="https://twitter.com/share?text=從 C 語言重新認識 Javascript - 關於變數傳遞的本質 - 大臉與哈燒出版社&url=http%3A%2F%2Fblog.bigface.tw%2Fthe-ways-of-passing-variables%2F">
+            <ion-icon name="logo-twitter"></ion-icon>
+        </a>
+        <a class="share-item" target="_blank"
+            href="https://www.facebook.com/sharer.php?title=從 C 語言重新認識 Javascript - 關於變數傳遞的本質 - 大臉與哈燒出版社&u=http%3A%2F%2Fblog.bigface.tw%2Fthe-ways-of-passing-variables%2F">
+            <ion-icon name="logo-facebook"></ion-icon>
+        </a>
+        <!-- <a class="share-item" target="_blank"
+            href="https://service.weibo.com/share/share.php?title=從 C 語言重新認識 Javascript - 關於變數傳遞的本質 - 大臉與哈燒出版社&url=http://blog.bigface.tw/the-ways-of-passing-variables/&pic=">
+            <div class="n-icon n-icon-weibo"></div>
+        </a> -->
+    </section>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+                </section>
+            </section>
+
+            
+            <aside class="sidebar ">
+                
+
+
+<div class="widget" id="widget">
+    
+      
+  <div class="widget-wrap">
+    <div class="widget-inner">
+      <div class="toc post-toc-html"></div>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget-wrap widget-tags">
+    <div class="widget-title"><span>Tags</span></div>
+    <div class="widget-inner">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%83%E5%BE%97%E5%88%86%E4%BA%AB/" rel="tag">心得分享</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%80%E8%A1%93%E4%BA%A4%E6%B5%81/" rel="tag">技術交流</a></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap widget-recent-posts">
+    <div class="widget-title"><span>Recent Posts</span></div>
+    <div class="widget-inner">
+      <ul>
+        
+          <li>
+            <a href="/the-ways-of-passing-variables/">從 C 語言重新認識 Javascript - 關於變數傳遞的本質</a>
+          </li>
+        
+          <li>
+            <a href="/web-worker-with-parallel-requests/">為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作</a>
+          </li>
+        
+          <li>
+            <a href="/async_parallel_sequential/">Wait！Await 和你想的不一樣！淺談非同步的 Parallel &amp; Seqential</a>
+          </li>
+        
+          <li>
+            <a href="/front-end-interview/">Junior Front-End 面試心得 - 2022 Q1</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget-wrap widget-archive">
+    <div class="widget-title"><span>Archive</span></div>
+    <div class="widget-inner">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a></li></ul>
+    </div>
+  </div>
+
+
+    
+</div>
+
+<div id="backtop"><i class="icon icon-arrow-up"></i></div>
+            </aside>
+            
+        </div>
+    </div>
+
+    <footer class="footer">
+    <div class="footer-wave">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#3c4859" fill-opacity="1" d="M0,160L60,181.3C120,203,240,245,360,240C480,235,600,181,720,186.7C840,192,960,256,1080,261.3C1200,267,1320,213,1380,186.7L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+    </div>
+
+    <!-- Please do not remove this -->
+    <!-- 开源不易，请勿删除 -->
+    <div class="footer-wrap">
+        <div class="footer-inner"> 
+            大臉與哈燒出版社 &copy; 2024<br>
+            Powered By Hexo · Theme By <a href="https://linhong.me/" target="_blank">Aomori</a> · <a href="https://github.com/lh1me/hexo-theme-aomori" target="_blank">Github</a>
+        </div>
+    </div>
+
+</footer>
+
+<script type="module" src="https://unpkg.com/ionicons@6.0.2/dist/ionicons/ionicons.esm.js"></script>
+
+
+
+
+
+
+<script src="/dist/build.js?1654266144177.js"></script>
+
+
+<script src="/dist/custom.js?1654266144177.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

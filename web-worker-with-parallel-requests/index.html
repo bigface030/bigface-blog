@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+    <title>為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作 | 大臉與哈燒出版社</title>
+
+    <meta name="description" content="&lt;p&gt;本文將從 web worker 最基本的用法切入。除了程式面的語法以外，同時針對概念以及 design pattern 進行解釋，並在這個過程中逐漸模擬出真實世界的使用情境。&lt;/p&gt;">
+    <meta name="keywords" content="">
+
+    
+
+    <meta property="og:locale" content="en" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content= "為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作 | 大臉與哈燒出版社"  />
+    <meta property="og:description" content= "&lt;p&gt;本文將從 web worker 最基本的用法切入。除了程式面的語法以外，同時針對概念以及 design pattern 進行解釋，並在這個過程中逐漸模擬出真實世界的使用情境。&lt;/p&gt;" />
+    <meta property="og:url" content="http://blog.bigface.tw/web-worker-with-parallel-requests/index.html" />
+    <meta property="og:site_name" content="" />
+    <meta property="article:author" content="Dalian Wang" />
+    <meta property="article:publisher" content="" />
+    <meta property="og:description" content="&lt;p&gt;本文將從 web worker 最基本的用法切入。除了程式面的語法以外，同時針對概念以及 design pattern 進行解釋，並在這個過程中逐漸模擬出真實世界的使用情境。&lt;/p&gt;" />
+    <meta name="twitter:title" content="為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作 | 大臉與哈燒出版社"/>
+    <meta name="twitter:description" content="&lt;p&gt;本文將從 web worker 最基本的用法切入。除了程式面的語法以外，同時針對概念以及 design pattern 進行解釋，並在這個過程中逐漸模擬出真實世界的使用情境。&lt;/p&gt;"/>
+    <script type="application/ld+json">
+        {
+            "description": "&lt;p&gt;本文將從 web worker 最基本的用法切入。除了程式面的語法以外，同時針對概念以及 design pattern 進行解釋，並在這個過程中逐漸模擬出真實世界的使用情境。&lt;/p&gt;",
+            "author": { "@type": "Person", "name": "Dalian Wang" },
+            "@type": "BlogPosting",
+            "url": "http://blog.bigface.tw/web-worker-with-parallel-requests/index.html",
+            "publisher": {
+            "@type": "Organization",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "http://blog.bigface.twundefined"
+            },
+            "name": "Dalian Wang"
+            },
+            "headline": "為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作 | 大臉與哈燒出版社",
+            "datePublished": "2023-06-29T15:49:23.000Z",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "http://blog.bigface.tw/web-worker-with-parallel-requests/index.html"
+            },
+            "@context": "http://schema.org"
+        }
+    </script>
+
+
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐢</text></svg>">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/dist/build.css?v=1654266144177.css">
+
+
+    
+<link rel="stylesheet" href="/dist/custom.css?v=1654266144177.css">
+
+
+    <script>
+        window.isPost = true
+        window.aomori = {
+            
+            
+            
+        }
+        window.aomori_logo_typed_animated = false
+        window.aomori_search_algolia = false
+
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3FXMCYL94W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-3FXMCYL94W');
+    </script>
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+
+    <div class="container">
+    <header class="header">
+        <div class="header-type">
+            
+            <div class="header-type-inner">
+                
+                    <a class="header-type-title" href="/">大臉與哈燒出版社</a>
+                
+    
+                
+            </div>
+        </div>
+        <div class="header-menu">
+            <div class="header-menu-inner">
+                
+                <a href="/">Home</a>
+                
+                <a href="/archives">Archives</a>
+                
+                <a href="/tags">Tags</a>
+                
+                <a href="/about">About</a>
+                
+            </div>
+            <div class="header-menu-social">
+                
+            </div>
+        </div>
+
+        <div class="header-menu-mobile">
+            <div class="header-menu-mobile-inner" id="mobile-menu-open">
+                <i class="icon icon-menu"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="header-menu-mobile-menu">
+        <div class="header-menu-mobile-menu-bg"></div>
+        <div class="header-menu-mobile-menu-wrap">
+            <div class="header-menu-mobile-menu-inner">
+                <div class="header-menu-mobile-menu-close" id="mobile-menu-close">
+                    <i class="icon icon-cross"></i>
+                </div>
+                <div class="header-menu-mobile-menu-list">
+                    
+                    <a href="/">Home</a>
+                    
+                    <a href="/archives">Archives</a>
+                    
+                    <a href="/tags">Tags</a>
+                    
+                    <a href="/about">About</a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <div class="container">
+        <div class="main">
+            <section class="inner">
+                <section class="inner-main">
+                    <div class="post">
+    <article id="post-clvqd500a0003hg5r87u2bg76" class="article article-type-post" itemscope
+    itemprop="blogPost">
+
+    <div class="article-inner">
+
+        
+          
+        
+        
+        
+
+        
+        <header class="article-header">
+            
+  
+    <h1 class="article-title" itemprop="name">
+      為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作
+    </h1>
+  
+
+        </header>
+        
+
+        <div class="article-more-info article-more-info-post hairline">
+
+            <div class="article-date">
+  <time datetime="2023-06-29T15:49:23.000Z" itemprop="datePublished">2023-06-29</time>
+</div>
+
+            
+
+            
+            <div class="article-tag">
+                <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%80%E8%A1%93%E4%BA%A4%E6%B5%81/" rel="tag">技術交流</a></li></ul>
+            </div>
+            
+
+            
+
+        </div>
+
+        <div class="article-entry post-inner-html hairline" itemprop="articleBody">
+            <p>本文將從 web worker 最基本的用法切入。除了程式面的語法以外，同時針對概念以及 design pattern 進行解釋，並在這個過程中逐漸模擬出真實世界的使用情境。</p>
+<span id="more"></span>
+
+<p><img src="https://images.unsplash.com/photo-1516216628859-9bccecab13ca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA==&auto=format&fit=crop&w=1769&q=80"></p>
+<h2 id="什麼是-web-worker-為什麼要使用"><a href="#什麼是-web-worker-為什麼要使用" class="headerlink" title="什麼是 web worker? 為什麼要使用?"></a>什麼是 web worker? 為什麼要使用?</h2><p>因為 Javascript 是 single thread 的程式語言，一次只能做一件事。所以如果在 main thread 上進行耗時的計算 (eg. 跑一個 2^53 的迴圈)，就會阻斷其他網站的基礎工作 (eg. UI render、parsing)。</p>
+<p>使用 web worker，可以讓我們在瀏覽器上開出額外的 thread。在利用他們協助做耗時運算的同時，也讓 main thread 得以繼續執行 call stack 裡的任務。</p>
+<p>舉例來說，來到一間飲料店，這間飲料店在那個時段只有老闆自己顧店。那麼一旦老闆收到顧客的訂單去製作飲料，就沒辦法同時應付等待點餐的客人、出飲料給客人、收貨、外送、煮珍珠等等任務。</p>
+<p>然而，如果老闆願意多雇用一個員工，專門在工作區製作飲料，那麼在飲料製作的同時，老闆就能夠繼續執行其他的工作。</p>
+<p>於是我們迎來了第一位員工 - 小帥。</p>
+<h2 id="One-Request-to-One-Worker"><a href="#One-Request-to-One-Worker" class="headerlink" title="One Request to One Worker"></a>One Request to One Worker</h2><p>web worker 最基本的用法如下：</p>
+<pre><code class="javascript=">const worker = new Worker(&#39;worker.js&#39;);
+
+worker.onmessage = (e) =&gt; &#123;
+  console.log(`$&#123;e.data&#125; 好了`);
+&#125;;
+
+// 使用時呼叫
+worker.postmessage(&#39;阿娘喂翡翠檸檬綠茶&#39;);
+</code></pre>
+<p>假設這是一間乏人問津的飲料店，小帥一個時間點只會接到一張單，且做完每張單中間都有時間休息，那麼會長這樣：</p>
+<p><img src="https://i.imgur.com/eAP3Qrb.png"></p>
+<p>然而，基於以下兩個理由</p>
+<ul>
+<li>正在實作 library，想要增加 client 端使用的簡易性，不需要由 client 自行 new worker</li>
+<li>正在開發大型專案，想要針對現有的程式碼做改善，做更好的抽象化和封裝</li>
+</ul>
+<p>可以利用 javascript 的非同步特性，透過 promise 做一層抽象化，達到封裝 worker 的目的。</p>
+<pre><code class="javascript=">const worker = new Worker(&#39;worker.js&#39;);
+
+const viaWorker = (drink) =&gt; &#123;
+  worker.postMessage(drink);
+  return new Promise(resolve =&gt; &#123;
+    worker.onmessage = (e) =&gt; &#123;
+      resolve(e.data);
+    &#125;;
+  &#125;);
+&#125;;
+
+// 使用時呼叫
+viaWorker(&#39;阿娘喂翡翠檸檬綠茶&#39;).then(resolvedValue =&gt; &#123;
+  console.log(resolvedValue);
+&#125;);
+</code></pre>
+<p>如此一來就得到了一個更方便使用的 interface，乍看之下是一個不會有問題的寫法。</p>
+<h2 id="Multiple-Requests-to-One-Worker"><a href="#Multiple-Requests-to-One-Worker" class="headerlink" title="Multiple Requests to One Worker"></a>Multiple Requests to One Worker</h2><p>很遺憾的，對於台灣的天氣來說，除非真的很難喝或開在鳥不生蛋的地方，否則午茶時刻，點飲料的人總是大排長龍。</p>
+<p>訂單一直來，製作飲料絕對也是一杯接著一杯，小帥根本沒時間可以休息。</p>
+<p>因為每杯飲料的製程有的簡單有的繁瑣，又或者是每個訂單的製作優先順序不同，<br>這時如果同時有多位客人在等飲料，飲料店通常會發給每個等待中的客人一張號碼牌。</p>
+<p>顧客只需要正確地依照店員的叫號取餐，不需要親自查看飲料杯上的標籤或內容物，就能夠確保每一位客人在取餐時都能拿到和點餐過程中相符的品項。</p>
+<p>同樣地，如果有多個 requests 在短時間內被送到這個 worker，<br>在沒有經過封裝，原生的 web worker 的寫法中，我們可以加上識別碼 (identification code) 去辨識：</p>
+<pre><code class="javascript=">const worker = new Worker(&#39;worker.js&#39;);
+
+worker.onmessage = (&#123; data &#125;) =&gt; &#123;
+  console.log(`顧客 $&#123;data.id&#125; 的 $&#123;data.drink&#125; 做好了`);
+&#125;;
+
+// 使用時呼叫
+const id = crypto.randomUUID();
+worker.postMessage(&#123; id, drink: &#39;咪咕嚕嚕&#39; &#125;);
+</code></pre>
+<p>在封裝的版本，你可能會想說可以透過一樣的方式去處理，但會先發現一個奇怪的現象：</p>
+<p><img src="https://i.imgur.com/v7gYmFo.png"></p>
+<p>只有最後一個點餐的人會收到來自 worker 的訊息，而且不能保證拿到自己的飲料！</p>
+<p><img src="https://i.imgur.com/itnBA8C.png"></p>
+<p>原因是因為我們每次呼叫的時候，都會 assign 一個 callback 給 message 這個 event，<br>也就是說 onmessage 事件在每次呼叫的時候都會被重新註冊，並且和當前 promise 的 resolve 值綁定在一起，導致互相覆蓋的情況。</p>
+<p>在多個 request 的情況下，等待 resolve 的值會有很多個，而 onmessage 事件僅僅只能被註冊一次。</p>
+<p>所以我們可以建立一個 resolve 值的 cache，並且在產生 worker 的時候就預先註冊 message 事件。</p>
+<pre><code class="javascript=">const worker = new Worker(&#39;worker.js&#39;);
+
+const resolvers = &#123;&#125;;
+
+worker.onmessage = (&#123; data &#125;) =&gt; &#123;
+  resolvers[data.id](data);
+  delete resolvers[data.id];
+&#125;;
+
+const viaWorker = (drink) =&gt; &#123;
+  const id = crypto.randomUUID();
+  worker.postMessage(&#123; id, drink &#125;);
+  return new Promise((resolve) =&gt; &#123;
+    resolvers[id] = resolve;
+  &#125;);
+&#125;;
+
+// 使用時呼叫
+viaWorker(&#39;咪咕嚕嚕&#39;).then((&#123; id, drink &#125;) =&gt; &#123;
+  console.log(`顧客 $&#123;id&#125; 的 $&#123;drink&#125; 做好了`);
+&#125;);
+</code></pre>
+<p>如此一來就能取消 onmessage 和各個 resolve 值的綁定。<br>同時一樣也可以將回傳的訊息加上識別碼，讓 main thread 得以進行辨識。</p>
+<h2 id="Multiple-Requests-to-Multiple-Workers"><a href="#Multiple-Requests-to-Multiple-Workers" class="headerlink" title="Multiple Requests to Multiple Workers"></a>Multiple Requests to Multiple Workers</h2><p>隨著飲料店生意越來越好，加上小帥已經快要變成富貴手，老闆不得不再多雇用一名員工小美，來分擔小帥的工作量。</p>
+<p>起初，老闆都還是會先將訂單送到小帥那邊，當小帥忙不過來的時候才會 pass 給小美，小美只要做完飲料就會 pass 回小帥，最後才回到老闆手上。</p>
+<p><img src="https://i.imgur.com/24b9gPD.png"></p>
+<p>然而這麼做會有幾個問題：</p>
+<ol>
+<li>飲料在人員之間傳遞花費更多溝通時間<br>&#x3D;&gt; postmessage 傳遞過程中的資料運輸需要成本</li>
+<li>老闆收到一杯有問題的飲料很難確認是小美或小帥的問題<br>&#x3D;&gt; 從 dev tool 難以針對 sub-worker 進行 debug</li>
+<li>老闆難以管理小美的工作狀態：<br>&#x3D;&gt; main thread 無法及時掌握 sub-worker 執行 task 的狀態</li>
+</ol>
+<p>於是老闆想了一個新的方法：</p>
+<p>由老闆依照小帥和小美手上的工作量分配工作讓他們各自處理，做完飲料後各自直接交付給老闆。</p>
+<p><img src="https://i.imgur.com/GST6kek.png"></p>
+<p>這個機制被稱作 thread pool，是一個針對 multi-thread 的設計模式，可以實作在大部分主流的程式語言上。</p>
+<p>同時可以進一步優化，定義以下兩個變數：</p>
+<ul>
+<li>maximum: 短時間內多個 request 時，產生的最大 worker 數量<br>(若當前沒有空閒 worker 且 worker 數量少於這個值，呼叫時會產生新的 worker)</li>
+<li>minimum: 處理完短時間內多個 request 後，常駐的 worker 數量<br>(當前 worker 數量超過這個值且有空閒 worker 時，該空閒的 worker 將會被移除)</li>
+</ul>
+<p>也就是說，沒有客人或人少的時候我可以只用一個人力去做飲料，尖峰時刻再增加人力來上班，<br>如此一來就可以增加更多的彈性，最小化人事成本。</p>
+<p>不過在瀏覽器中並不是想開多少 thread 就有多少，數量上限通常會和 CPU 的核心數有關，這部分會需要多多注意。</p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>為了方便解釋，本文的範例是非常簡化的版本，範例程式碼如下：<br><a target="_blank" rel="noopener" href="https://github.com/bigface030/web-worker-with-parallel-requests">https://github.com/bigface030/web-worker-with-parallel-requests</a></p>
+<p>有些面向礙於篇幅並沒有提及，包含但不限於</p>
+<ul>
+<li>送到 web worker 的格式該如何驗證？</li>
+<li>web worker 處理過程發生錯誤怎麼辦？無法回傳訊息怎麼辦？</li>
+<li>不同 worker 之間的合作關係該怎麼處理？</li>
+</ul>
+<p>這些東西可能比較沒有固定的處理方式或是 best practice，比較像是根據當下的需求做評估，並參照過往經驗去實踐，而這部分筆者也還正在練功中。</p>
+<p>本文若有誤再麻煩大大們指正，有任何想法也歡迎和我交流。</p>
+
+        </div>
+
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+<nav class="article-nav">
+  
+    <a href="/the-ways-of-passing-variables/" id="article-nav-newer" class="article-nav-link-wrap">
+      <div class="article-nav-caption">下一篇</div>
+      <div class="article-nav-title">
+        
+          從 C 語言重新認識 Javascript - 關於變數傳遞的本質
+        
+      </div>
+    </a>
+  
+  
+    <a href="/async_parallel_sequential/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-caption">上一篇</div>
+      <div class="article-nav-title">Wait！Await 和你想的不一樣！淺談非同步的 Parallel &amp; Seqential</div>
+    </a>
+  
+</nav>
+
+
+    <section class="share">
+        <div class="share-title">分享</div>
+        <a class="share-item" target="_blank"
+            href="https://twitter.com/share?text=為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作 - 大臉與哈燒出版社&url=http%3A%2F%2Fblog.bigface.tw%2Fweb-worker-with-parallel-requests%2F">
+            <ion-icon name="logo-twitter"></ion-icon>
+        </a>
+        <a class="share-item" target="_blank"
+            href="https://www.facebook.com/sharer.php?title=為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作 - 大臉與哈燒出版社&u=http%3A%2F%2Fblog.bigface.tw%2Fweb-worker-with-parallel-requests%2F">
+            <ion-icon name="logo-facebook"></ion-icon>
+        </a>
+        <!-- <a class="share-item" target="_blank"
+            href="https://service.weibo.com/share/share.php?title=為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作 - 大臉與哈燒出版社&url=http://blog.bigface.tw/web-worker-with-parallel-requests/&pic=">
+            <div class="n-icon n-icon-weibo"></div>
+        </a> -->
+    </section>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+                </section>
+            </section>
+
+            
+            <aside class="sidebar ">
+                
+
+
+<div class="widget" id="widget">
+    
+      
+  <div class="widget-wrap">
+    <div class="widget-inner">
+      <div class="toc post-toc-html"></div>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget-wrap widget-tags">
+    <div class="widget-title"><span>Tags</span></div>
+    <div class="widget-inner">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BF%83%E5%BE%97%E5%88%86%E4%BA%AB/" rel="tag">心得分享</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%80%E8%A1%93%E4%BA%A4%E6%B5%81/" rel="tag">技術交流</a></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap widget-recent-posts">
+    <div class="widget-title"><span>Recent Posts</span></div>
+    <div class="widget-inner">
+      <ul>
+        
+          <li>
+            <a href="/the-ways-of-passing-variables/">從 C 語言重新認識 Javascript - 關於變數傳遞的本質</a>
+          </li>
+        
+          <li>
+            <a href="/web-worker-with-parallel-requests/">為了寫文章，我開了一間飲料店！淺談 web worker 針對併發請求的實作</a>
+          </li>
+        
+          <li>
+            <a href="/async_parallel_sequential/">Wait！Await 和你想的不一樣！淺談非同步的 Parallel &amp; Seqential</a>
+          </li>
+        
+          <li>
+            <a href="/front-end-interview/">Junior Front-End 面試心得 - 2022 Q1</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget-wrap widget-archive">
+    <div class="widget-title"><span>Archive</span></div>
+    <div class="widget-inner">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a></li></ul>
+    </div>
+  </div>
+
+
+    
+</div>
+
+<div id="backtop"><i class="icon icon-arrow-up"></i></div>
+            </aside>
+            
+        </div>
+    </div>
+
+    <footer class="footer">
+    <div class="footer-wave">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#3c4859" fill-opacity="1" d="M0,160L60,181.3C120,203,240,245,360,240C480,235,600,181,720,186.7C840,192,960,256,1080,261.3C1200,267,1320,213,1380,186.7L1440,160L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>
+    </div>
+
+    <!-- Please do not remove this -->
+    <!-- 开源不易，请勿删除 -->
+    <div class="footer-wrap">
+        <div class="footer-inner"> 
+            大臉與哈燒出版社 &copy; 2024<br>
+            Powered By Hexo · Theme By <a href="https://linhong.me/" target="_blank">Aomori</a> · <a href="https://github.com/lh1me/hexo-theme-aomori" target="_blank">Github</a>
+        </div>
+    </div>
+
+</footer>
+
+<script type="module" src="https://unpkg.com/ionicons@6.0.2/dist/ionicons/ionicons.esm.js"></script>
+
+
+
+
+
+
+<script src="/dist/build.js?1654266144177.js"></script>
+
+
+<script src="/dist/custom.js?1654266144177.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
